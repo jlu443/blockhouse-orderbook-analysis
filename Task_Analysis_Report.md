@@ -211,7 +211,7 @@ The constraint Σ_i x_i = S is satisfied by construction through our sequential 
 
 ## Code Repository
 
-**GitHub Link**: [Blockhouse Order Book Analysis](https://github.com/[username]/blockhouse-orderbook-analysis)
+**GitHub Link**: [Blockhouse Order Book Analysis](https://github.com/jlu443/blockhouse-orderbook-analysis)
 
 The repository contains:
 - Complete C++ implementation with MBP-10 data parsing
