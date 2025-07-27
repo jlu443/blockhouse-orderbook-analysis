@@ -118,6 +118,8 @@ struct OrderBookSnapshot {
     bool isValid() const {
         return getMidPrice() > 0.0;
     }
+};
+
 /**
  * @struct ImpactResult
  * @brief Stores the results of temporary impact analysis for a specific order size
@@ -210,7 +212,7 @@ public:
                 int rows_loaded = 0;
                 while (std::getline(file, line) && rows_loaded < 10000) { // Limit rows per file
                     auto tokens = split(line, ',');
-                    if (tokens.size() < 71) continue; // Need at least 71 columns for bid_sz_09/ask_sz_09
+                    if (tokens.size() < 71U) continue; // Need at least 71 columns for bid_sz_09/ask_sz_09
                     
                     OrderBookSnapshot snapshot;
                     snapshot.timestamp = tokens[0];
@@ -436,29 +438,19 @@ public:
         // Print sample results
         std::cout << "\nSample Buy Impact Results:" << std::endl;
         std::cout << "Order Size\tImpact (bps)" << std::endl;
-        for (size_t i = 0; i < std::min(size_t(10), buy_impact.size()); ++i) {
+        for (size_t i = 0; i < std::min(static_cast<size_t>(10), buy_impact.size()); ++i) {
             std::cout << buy_impact[i].order_size << "\t\t" 
                       << std::setprecision(2) << buy_impact[i].impact_bps << std::endl;
         }
         
         std::cout << "\nSample Sell Impact Results:" << std::endl;
         std::cout << "Order Size\tImpact (bps)" << std::endl;
-        for (size_t i = 0; i < std::min(size_t(10), sell_impact.size()); ++i) {
+        for (size_t i = 0; i < std::min(static_cast<size_t>(10), sell_impact.size()); ++i) {
             std::cout << sell_impact[i].order_size << "\t\t" 
                       << std::setprecision(2) << sell_impact[i].impact_bps << std::endl;
         }
     }
     
-    void saveImpactResults(const std::string& filename, const std::vector<ImpactResult>& results) {
-        std::ofstream file(filename);
-        if (file.is_open()) {
-            file << "order_size,avg_impact,impact_bps\n";
-            file << std::fixed << std::setprecision(6);
-            
-            for (const auto& result : results) {
-                file << result.order_size << "," 
-                     << result.avg_impact << "," 
-                     << result.impact_bps << "\n";
     /**
      * @brief Save impact analysis results to CSV file
      * @param filename Output CSV filename
